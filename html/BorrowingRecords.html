@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>BorrowingRecords</title>
+    <link rel="stylesheet" href="../css/font.css">
+    <link rel="stylesheet" href="../css/xadmin.css">
+    <script src="../lib/layui/layui.js" charset="utf-8"></script>
+    <script src="../js/jquery-3.3.1.js" charset="utf-8"></script>
+    <script type="text/javascript" src="../js/xadmin.js"></script>
+</head>
+
+<body>
+    <div class="x-nav">
+        <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right"
+            onclick="location.reload()" title="刷新">
+            <i class="layui-icon layui-icon-refresh" style="line-height:30px"></i>
+        </a>
+    </div>
+    <div class="layui-fluid">
+        <div class="layui-row layui-col-space15">
+            <div class="layui-col-md12">
+                <div class="layui-card">
+                    <div class="layui-card-body demoTable">
+                        <div class="layui-form layui-col-space5">
+
+                            <div class="layui-input-inline layui-show-xs-block">
+                                <input type="text" id="demoReload" placeholder="请输入车辆信息" autocomplete="off"
+                                    class="layui-input"></div>
+                            <div class="layui-input-inline layui-show-xs-block">
+                                <button class="layui-btn" data-type="reload">搜索</button>
+                            </div>
+                            <form enctype="multipart/form-data" action="../php/upload.php" method="post">
+                                <label for="file">文件名</label>
+                                <input type="file" name="file" id="file">
+                                <input type="submit" value="上传">
+                            </form>
+                        </div>
+                    </div>
+                    <div class="layui-card-body ">
+                        <table class="layui-hide" id="test" lay-filter="test"></table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 弹出层 -->
+
+    <script src="../lib/layui/layui.js" charset="utf-8"></script>
+
+    <script type="text/javascript">
+        layui.use(['table', 'layer', 'form', 'laydate'], function () {
+            var table = layui.table;
+            var layer = layui.layer;
+            var form = layui.form;
+            var laydate = layui.laydate;
+            popForm = layui.form;
+
+            laydate.render({
+                elem: '#DatePublication',
+                trigger: 'click',
+                type: 'year'
+            });
+
+            table.render({
+                elem: '#test',
+                toolbar: true,
+                loading: true,
+                title: "图书借阅历史列表",
+                url: '../php/Circulation.php',
+                // where: {
+                //     action: 'GetAllBorrowingRecords'
+                // },
+                where: {
+                    action: 'Test'
+                },
+                cellMinWidth: 120,
+                    cols: [
+                        [{
+                            field: 'component_id',
+                            title: '部件编号',
+                            sort: true,
+                            align: 'center',
+                        }, {
+                            field: 'person_id',
+                            title: '技术人员编号',
+                            align: 'center',
+                        }, {
+                            field: 'car_id',
+                            title: '车辆信息',
+                            align: 'center',
+                        }, {
+                            field: 'component_name',
+                            title: '部件名称',
+                            align: 'center',
+                            sort: true
+                        }, {
+                            field: 'person_number',
+                            title: '员工号',
+                            sort: true,
+                            align: 'center',
+                        }, {
+                            field: 'person_name',
+                            title: '技术人员',
+                            align: 'center',
+                        }, {
+                            field: 'repair',
+                            title: '修程',
+                            align: 'center',
+                        },{
+                            field: 'start_time',
+                            title: '开始日期',
+                            align: 'center',
+                        }, {
+                            field: 'end_time',
+                            title: '结束日期',
+                            align: 'center',
+                        }
+                        ]
+                    ],
+                    id: 'testReload',
+                    page: true
+                });
+            //     cols: [
+            //         [{
+            //             field: 'BookBarcode',
+            //             title: '部件编号',
+            //             sort: true,
+            //             align: 'center',
+            //         }, {
+            //             field: 'RBarcode',
+            //             title: '技术人员编号',
+            //             align: 'center',
+            //         }, {
+            //             field: 'BookCallNo',
+            //             title: '车辆信息',
+            //             align: 'center',
+            //         }, {
+            //             field: 'BName',
+            //             title: '部件名称',
+            //             align: 'center',
+            //             sort: true
+            //         }, {
+            //             field: 'Number',
+            //             title: '员工号',
+            //             sort: true,
+            //             align: 'center',
+            //         }, {
+            //             field: 'RName',
+            //             title: '技术人员',
+            //             align: 'center',
+            //         }, {
+            //             field: 'Stage',
+            //             title: '修程',
+            //             align: 'center',
+            //         },{
+            //             field: 'StartTime',
+            //             title: '开始日期',
+            //             align: 'center',
+            //             templet: "<div>{{layui.util.toDateString(d.StartTime, 'yyyy-MM-dd')}}</div>"
+            //         }, {
+            //             field: 'ReturnTime',
+            //             title: '结束日期',
+            //             align: 'center',
+            //             templet: "<div>{{layui.util.toDateString(d.ReturnTime, 'yyyy-MM-dd')}}</div>"
+            //         }
+            //         ]
+            //     ],
+            //     id: 'testReload',
+            //     page: true
+            // });
+
+
+            //---------------表格搜索重载----------------
+            var $ = layui.$,
+                active = {
+                    reload: function () {
+                        //执行重载
+                        table.reload('testReload', {
+                            url: '../php/Circulation.php',
+                            page: {
+                                curr: 1 //重新从第 1 页开始
+                            },
+                            where: {
+                                action: 'test',
+                                callNo: $('#demoReload').val()
+                            }
+                        });
+                    }
+                };
+            //监听是否点击搜索框
+            $('.demoTable .layui-btn').on('click', function () {
+                var type = $(this).data('type');
+                active[type] ? active[type].call(this) : '';
+            });
+        });
+
+
+    </script>
+</body>
+
+</html>
